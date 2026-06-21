@@ -98,7 +98,7 @@ export default function About() {
 
             <p className="text-base text-light-muted dark:text-dark-muted leading-relaxed">
               React Native Developer with 2+ years of experience building
-              high-performance mobile and web applications. Experienced in
+              high-performance mobile applications. Experienced in
               developing scalable applications, improving performance, building
               reusable components, and working in Agile Scrum environments.
             </p>

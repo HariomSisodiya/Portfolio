@@ -60,7 +60,7 @@ const achievements = [
     value: "3+ Major",
     title: "Delivered Apps",
     description:
-      "Architected and published Wealth Elite, Advisor X, and KhetiRatna.",
+      "Architected and published Wealth Elite, Advisor X, and Sales Ninja CRM.",
     icon: FiSmartphone,
     color: "from-purple-500/10 to-pink-500/10 text-purple-500",
   },
