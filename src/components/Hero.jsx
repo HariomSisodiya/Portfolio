@@ -124,7 +124,7 @@ export default function Hero() {
           </Link>
 
           <a
-            href="/src/assets/resume.pdf"
+            href="/resume.pdf"
             download="Hariom_Sisodiya_Resume.pdf"
             className="flex justify-center items-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-900 text-light-text dark:text-dark-text transition-colors duration-300"
           >
