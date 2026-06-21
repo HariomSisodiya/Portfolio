@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-scroll';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FiSun, FiMoon, FiMenu, FiX, FiDownload } from 'react-icons/fi';
+import resumePdf from "../assets/resume.pdf";
 
 const navItems = [
   { label: 'Home', target: 'home' },
@@ -113,7 +114,7 @@ export default function Navbar({ theme, toggleTheme }) {
               onMouseLeave={handleMagneticLeave}
               animate={{ x: magneticPos.x, y: magneticPos.y }}
               transition={{ type: 'spring', stiffness: 150, damping: 15, mass: 0.1 }}
-              href="/src/assets/resume.pdf"
+              href={resumePdf}
               download="Hariom_Sisodiya_Resume.pdf"
               className="btn-premium flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-semibold bg-brand-primary hover:bg-blue-700 text-white shadow-md shadow-blue-500/10 transition-colors cursor-pointer"
             >
@@ -174,7 +175,7 @@ export default function Navbar({ theme, toggleTheme }) {
               <div className="w-full h-px bg-slate-200 dark:bg-slate-800" />
 
               <a
-                href="/src/assets/resume.pdf"
+                href={resumePdf}
                 download="Hariom_Sisodiya_Resume.pdf"
                 className="w-full flex justify-center items-center gap-2 py-3 rounded-lg text-sm font-semibold bg-brand-primary text-white shadow-md cursor-pointer"
                 onClick={() => setIsOpen(false)}
