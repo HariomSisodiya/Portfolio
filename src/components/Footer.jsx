@@ -58,7 +58,7 @@ export default function Footer() {
             href="tel:+918770155914"
             aria-label="Phone"
             className="p-2 rounded-full border border-slate-100 hover:border-brand-primary dark:border-slate-850 dark:hover:border-brand-primary hover:text-brand-primary dark:hover:text-brand-primary transition-colors text-light-muted dark:text-dark-muted"
-            aria-label="Email"
+            aria-label="Phone"
           >
             <FiPhoneCall className="w-4 h-4" />
           </a>

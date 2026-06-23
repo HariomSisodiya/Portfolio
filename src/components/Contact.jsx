@@ -1,26 +1,34 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FiMail, FiLinkedin, FiGithub, FiSend, FiCheckCircle, FiAlertCircle, FiPhone } from 'react-icons/fi';
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  FiMail,
+  FiLinkedin,
+  FiGithub,
+  FiSend,
+  FiCheckCircle,
+  FiAlertCircle,
+  FiPhone,
+} from "react-icons/fi";
 
-const initialFormData = { name: '', email: '', subject: '', message: '' };
+const initialFormData = { name: "", email: "", subject: "", message: "" };
 
 export default function Contact() {
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
-  const [submitError, setSubmitError] = useState('');
+  const [submitError, setSubmitError] = useState("");
 
   const validate = () => {
     let tempErrors = {};
     if (!formData.name.trim()) tempErrors.name = "Name is required.";
-    
+
     if (!formData.email.trim()) {
       tempErrors.email = "Email is required.";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       tempErrors.email = "Please enter a valid email address.";
     }
-    
+
     if (!formData.message.trim()) {
       tempErrors.message = "Message cannot be empty.";
     } else if (formData.message.trim().length < 10) {
@@ -35,7 +43,7 @@ export default function Contact() {
     const { name, value } = e.target;
 
     setFormData((prev) => ({ ...prev, [name]: value }));
-    setSubmitError('');
+    setSubmitError("");
 
     if (errors[name]) {
       setErrors((prev) => {
@@ -47,67 +55,75 @@ export default function Contact() {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!validate()) return;
+    if (!validate()) return;
 
-  setIsSubmitting(true);
-  setSubmitError('');
+    setIsSubmitting(true);
+    setSubmitError("");
 
-  try {
-    const formDataObj = new FormData();
+    try {
+      const formDataObj = new FormData();
 
-    formDataObj.append(
-      'access_key',
-      import.meta.env.VITE_WEB3FORMS_ACCESS_KEY
-    );
+      formDataObj.append(
+        "access_key",
+        import.meta.env.VITE_WEB3FORMS_ACCESS_KEY,
+      );
 
-    formDataObj.append('name', formData.name.trim());
-    formDataObj.append('email', formData.email.trim());
-    formDataObj.append(
-      'subject',
-      formData.subject.trim() || 'Portfolio Contact Request'
-    );
-    formDataObj.append('message', formData.message.trim());
+      formDataObj.append("name", formData.name.trim());
+      formDataObj.append("email", formData.email.trim());
+      formDataObj.append(
+        "subject",
+        formData.subject.trim() || "Portfolio Contact Request",
+      );
+      formDataObj.append("message", formData.message.trim());
 
-    const response = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      body: formDataObj,
-    });
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formDataObj,
+      });
 
-    const result = await response.json();
+      const result = await response.json();
 
-    if (!response.ok || !result.success) {
-      throw new Error(result.message || 'Failed to send message');
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Failed to send message");
+      }
+
+      
+      if (!import.meta.env.VITE_WEB3FORMS_ACCESS_KEY) {
+        setSubmitError("Contact form is not configured.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      setErrors({});
+      setSubmitSuccess(true);
+
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+
+      setTimeout(() => {
+        setSubmitSuccess(false);
+      }, 5000);
+    } catch (error) {
+      setSubmitError(
+        error.message || "Something went wrong while sending your message.",
+      );
+    } finally {
+      setIsSubmitting(false);
     }
-
-    setErrors({});
-    setSubmitSuccess(true);
-
-    setFormData({
-      name: '',
-      email: '',
-      subject: '',
-      message: '',
-    });
-
-    setTimeout(() => {
-      setSubmitSuccess(false);
-    }, 5000);
-  } catch (error) {
-    setSubmitError(
-      error.message ||
-        'Something went wrong while sending your message.'
-    );
-  } finally {
-    setIsSubmitting(false);
-  }
-};
+  };
 
   return (
-    <section id="contact" className="py-24 px-6 md:px-12 relative overflow-hidden">
+    <section
+      id="contact"
+      className="py-24 px-6 md:px-12 relative overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto">
-        
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
           <span className="text-xs font-bold uppercase tracking-wider text-brand-primary">
@@ -120,13 +136,13 @@ export default function Contact() {
             </span>
           </h2>
           <p className="text-sm sm:text-base text-light-muted dark:text-dark-muted">
-            Have an application idea, a job opportunity, or just want to chat about React Native optimization? Reach out below!
+            Have an application idea, a job opportunity, or just want to chat
+            about React Native optimization? Reach out below!
           </p>
         </div>
 
         {/* Contact Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          
           {/* Left Cards Side: Quick Coordinates */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -139,7 +155,9 @@ export default function Contact() {
               Let's Discuss Your Project
             </h3>
             <p className="text-sm text-light-muted dark:text-dark-muted leading-relaxed">
-              I am open to contract roles, remote work partnerships, and full-time mobile development positions. Let's make something amazing.
+              I am open to contract roles, remote work partnerships, and
+              full-time mobile development positions. Let's make something
+              amazing.
             </p>
 
             <div className="space-y-4 pt-4">
@@ -152,7 +170,9 @@ export default function Contact() {
                   <FiPhone className="w-5 h-5" />
                 </div>
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-light-muted dark:text-dark-muted tracking-wider">Phone</span>
+                  <span className="text-[10px] uppercase font-bold text-light-muted dark:text-dark-muted tracking-wider">
+                    Phone
+                  </span>
                   <p className="text-xs sm:text-sm font-semibold text-slate-750 dark:text-slate-200 truncate">
                     +91-8770155914
                   </p>
@@ -168,7 +188,9 @@ export default function Contact() {
                   <FiMail className="w-5 h-5" />
                 </div>
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-light-muted dark:text-dark-muted tracking-wider">Email</span>
+                  <span className="text-[10px] uppercase font-bold text-light-muted dark:text-dark-muted tracking-wider">
+                    Email
+                  </span>
                   <p className="text-xs sm:text-sm font-semibold text-slate-750 dark:text-slate-200 truncate">
                     hariomsisodiya503@gmail.com
                   </p>
@@ -186,7 +208,9 @@ export default function Contact() {
                   <FiLinkedin className="w-5 h-5" />
                 </div>
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-light-muted dark:text-dark-muted tracking-wider">LinkedIn</span>
+                  <span className="text-[10px] uppercase font-bold text-light-muted dark:text-dark-muted tracking-wider">
+                    LinkedIn
+                  </span>
                   <p className="text-xs sm:text-sm font-semibold text-slate-750 dark:text-slate-200 truncate">
                     linkedin.com/in/hariom-sisodiya19
                   </p>
@@ -204,7 +228,9 @@ export default function Contact() {
                   <FiGithub className="w-5 h-5" />
                 </div>
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-light-muted dark:text-dark-muted tracking-wider">GitHub</span>
+                  <span className="text-[10px] uppercase font-bold text-light-muted dark:text-dark-muted tracking-wider">
+                    GitHub
+                  </span>
                   <p className="text-xs sm:text-sm font-semibold text-slate-750 dark:text-slate-200 truncate">
                     github.com/hariom-sisodiya
                   </p>
@@ -236,7 +262,8 @@ export default function Contact() {
                       Message Dispatched!
                     </h3>
                     <p className="text-sm text-light-muted dark:text-dark-muted max-w-sm">
-                      Thank you for reaching out, Hariom. Your message has been sent successfully. I will get back to you shortly!
+                      Thank you for reaching out, Hariom. Your message has been
+                      sent successfully. I will get back to you shortly!
                     </p>
                   </motion.div>
                 ) : (
@@ -259,7 +286,9 @@ export default function Contact() {
                           onChange={handleChange}
                           placeholder="Your full name"
                           className={`w-full px-4 py-2.5 rounded-lg border text-sm bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-850 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-primary/45 transition-colors ${
-                            errors.name ? 'border-red-500 focus:ring-red-500/40' : ''
+                            errors.name
+                              ? "border-red-500 focus:ring-red-500/40"
+                              : ""
                           }`}
                         />
                         {errors.name && (
@@ -282,7 +311,9 @@ export default function Contact() {
                           onChange={handleChange}
                           placeholder="your.email@example.com"
                           className={`w-full px-4 py-2.5 rounded-lg border text-sm bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-850 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-primary/45 transition-colors ${
-                            errors.email ? 'border-red-500 focus:ring-red-500/40' : ''
+                            errors.email
+                              ? "border-red-500 focus:ring-red-500/40"
+                              : ""
                           }`}
                         />
                         {errors.email && (
@@ -321,7 +352,9 @@ export default function Contact() {
                         onChange={handleChange}
                         placeholder="Write your project details or request here..."
                         className={`w-full px-4 py-2.5 rounded-lg border text-sm bg-slate-50 dark:bg-slate-950 border-slate-200 dark:border-slate-800 text-slate-850 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-primary/45 transition-colors resize-none ${
-                          errors.message ? 'border-red-500 focus:ring-red-500/40' : ''
+                          errors.message
+                            ? "border-red-500 focus:ring-red-500/40"
+                            : ""
                         }`}
                       />
                       {errors.message && (
@@ -361,7 +394,6 @@ export default function Contact() {
               </AnimatePresence>
             </div>
           </motion.div>
-
         </div>
       </div>
     </section>

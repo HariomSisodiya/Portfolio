@@ -1,7 +1,12 @@
-import { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { projectsData } from '../data/projects';
-import { FiExternalLink, FiChevronDown, FiChevronUp, FiSmartphone } from 'react-icons/fi';
+import { useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { projectsData } from "../data/projects";
+import {
+  FiExternalLink,
+  FiChevronDown,
+  FiChevronUp,
+  FiSmartphone,
+} from "react-icons/fi";
 
 // const getProjectUrl = (project) => {
 //   const userAgent = navigator.userAgent || navigator.vendor || window.opera || '';
@@ -13,17 +18,14 @@ import { FiExternalLink, FiChevronDown, FiChevronUp, FiSmartphone } from 'react-
 //   return project.webUrl || project.playStoreUrl || project.appStoreUrl || '#';
 // };
 const getProjectUrl = (project) => {
-  const userAgent = navigator.userAgent || navigator.vendor || window.opera || '';
+  const userAgent =
+    navigator.userAgent || navigator.vendor || window.opera || "";
   const isIOS =
     /iPad|iPhone|iPod/.test(userAgent) ||
-    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-
-  const isAndroid = /android/i.test(userAgent);
+    (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
 
   if (isIOS && project.appStoreUrl) return project.appStoreUrl;
-
-  // Android + Desktop/Web => Play Store
-  return project.playStoreUrl || project.appStoreUrl || '#';
+  return project.playStoreUrl || project.appStoreUrl || project.webUrl || null;
 };
 
 function ProjectCard({ project, isExpanded, onToggle }) {
@@ -43,8 +45,10 @@ function ProjectCard({ project, isExpanded, onToggle }) {
   };
 
   const handleViewApplication = () => {
-    window.open(getProjectUrl(project), '_blank', 'noopener,noreferrer');
+    window.open(getProjectUrl(project), "_blank", "noopener,noreferrer");
   };
+
+  const projectUrl = getProjectUrl(project);
 
   return (
     <motion.div
@@ -52,13 +56,13 @@ function ProjectCard({ project, isExpanded, onToggle }) {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       animate={{ rotateX: tilt.y, rotateY: tilt.x, y: tilt.x !== 0 ? -4 : 0 }}
-      transition={{ type: 'spring', stiffness: 200, damping: 20 }}
-      style={{ transformStyle: 'preserve-3d', perspective: 1000 }}
+      transition={{ type: "spring", stiffness: 200, damping: 20 }}
+      style={{ transformStyle: "preserve-3d", perspective: 1000 }}
       className="group rounded-xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-2xl hover:shadow-blue-500/10 transition-shadow duration-300 flex flex-col justify-between overflow-hidden text-left relative"
     >
       <div className="absolute inset-0 bg-gradient-to-t from-brand-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
-      <div className="flex flex-col" style={{ transform: 'translateZ(10px)' }}>
+      <div className="flex flex-col" style={{ transform: "translateZ(10px)" }}>
         <div className="h-48 sm:h-56 overflow-hidden relative border-b border-slate-100 dark:border-slate-800 bg-slate-950">
           <div className="absolute left-4 top-4 z-10 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/90 dark:bg-slate-950/85 text-[10px] font-bold uppercase tracking-wider text-brand-primary shadow-sm">
             <FiSmartphone className="w-3.5 h-3.5" />
@@ -102,7 +106,7 @@ function ProjectCard({ project, isExpanded, onToggle }) {
               {isExpanded && (
                 <motion.ul
                   initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
+                  animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.3 }}
                   className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2 overflow-hidden"
@@ -125,7 +129,7 @@ function ProjectCard({ project, isExpanded, onToggle }) {
 
       <div
         className="px-6 pb-6 pt-2 sm:px-8 sm:pb-8 z-20"
-        style={{ transform: 'translateZ(15px)' }}
+        style={{ transform: "translateZ(15px)" }}
       >
         <button
           type="button"
@@ -133,7 +137,7 @@ function ProjectCard({ project, isExpanded, onToggle }) {
           className="w-full btn-premium flex justify-center items-center gap-2 py-3 rounded-lg bg-brand-primary hover:bg-blue-700 text-sm font-semibold text-white shadow-md shadow-blue-500/15 transition-colors cursor-pointer"
         >
           <FiExternalLink className="w-4 h-4" />
-          <span>View Application</span>
+          <span> {projectUrl ? "View Application" : "No live link"}</span>
         </button>
       </div>
     </motion.div>
@@ -144,11 +148,14 @@ export default function Projects() {
   const [expandedProjectId, setExpandedProjectId] = useState(null);
 
   const toggleFeatures = (id) => {
-    setExpandedProjectId(prev => (prev === id ? null : id));
+    setExpandedProjectId((prev) => (prev === id ? null : id));
   };
 
   return (
-    <section id="projects" className="py-24 px-6 md:px-12 relative overflow-hidden">
+    <section
+      id="projects"
+      className="py-24 px-6 md:px-12 relative overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-12 space-y-3">
           <span className="text-xs font-bold uppercase tracking-wider text-brand-primary">
@@ -161,7 +168,9 @@ export default function Projects() {
             </span>
           </h2>
           <p className="text-sm sm:text-base text-light-muted dark:text-dark-muted">
-            A focused selection of mobile applications and business platforms built with production quality, clean UX, and practical performance in mind.
+            A focused selection of mobile applications and business platforms
+            built with production quality, clean UX, and practical performance
+            in mind.
           </p>
         </div>
 

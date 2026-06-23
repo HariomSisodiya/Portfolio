@@ -117,7 +117,7 @@ export default function About() {
                     <span className="p-0.5 rounded-full bg-emerald-500/10 text-emerald-500">
                       <FiCheck className="w-3.5 h-3.5" />
                     </span>
-                    <span>{skill}</span>
+                    <span className="font-medium text-slate-700 dark:text-slate-300">{skill}</span>
                   </li>
                 ))}
               </ul>
